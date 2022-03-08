@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<%- include('../partials/head') %>
+		<title>Log in - pawesome reminders</title>
+	</head>
+	<body>
+		<%- include('../partials/navbar') %>
+		<main class="container">
+			<h1>Log in</h1>
+			<% if (type === 'signup-success'){ %>
+			<h2>Sign up success!</h2>
+			<% }; if (type === 'error') {%>
+			<h2>Login error. Try again.</h2>
+			<% }; %>
+
+			<form action="/login" method="POST" class="needs-validation" novalidate>
+				<div class="form-floating mb-3">
+					<% if (email !== null){ %>
+					<input
+						type="email"
+						name="email"
+						class="form-control"
+						value="<%= email %>"
+						readonly
+					/>
+					<% } else { %>
+					<input type="email" name="email" class="form-control" required />
+					<% };%>
+					<label for="email">Email</label>
+					<div class="invalid-feedback">Please enter your email address.</div>
+				</div>
+				<div class="form-floating mb-3">
+					<input
+						type="password"
+						name="password"
+						class="form-control"
+						required
+					/>
+					<label for="password">Password</label>
+					<div class="invalid-feedback">Please enter your password.</div>
+				</div>
+				<button type="submit" class="btn btn-success">Sign in</button>
+				<!-- TODO: add option to change user email ("Not you?") -->
+			</form>
+		</main>
+		<%- include('../partials/scripts') %>
+	</body>
+</html>

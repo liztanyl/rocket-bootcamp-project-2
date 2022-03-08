@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<%- include('partials/head') %>
+		<title><%=dogInfo.name%> - pawesome reminders</title>
+	</head>
+	<body>
+		<%- include('partials/navbar') %>
+		<main class="container">
+			<h1 class="display-1 p-3 text-center"><%=dogInfo.name%></h1>
+			<div class="rounded bg-warning border rounded my-3">
+				<h5 class="d-block px-3 pt-2">Profile</h5>
+				<div class="list-group list-group-flush">
+					<% if (dogInfo.breed !== "") {%>
+					<div class="list-group-item py-3">
+						<h6>Breed</h6>
+						<%=dogInfo.breed%>
+					</div>
+					<%}%>
+					<div class="list-group-item py-3">
+						<h6>Notes</h6>
+						<%= dogInfo.notes === "" ? "No notes yet" : dogInfo.notes%>
+					</div>
+					<div class="list-group-item py-3">
+						<a href="/dog/<%=dogInfo.id%>/edit" class="btn btn-primary"
+							>Edit details</a
+						>
+					</div>
+				</div>
+			</div>
+			<% if (medScheds.length === 0) { %>
+			<div class="text-center">
+				<a class="btn border pt-2" href="/new-schedule">Add a schedule</a>
+			</div>
+			<% }; if (medScheds.length > 0) { %>
+
+			<div class="medInfo bg-danger border rounded text-light mt-3">
+				<h4 class="d-block text-end px-3 pt-2">
+					Schedule<% if (medScheds.length > 1) { %>s<%}%>
+				</h4>
+				<div class="list-group list-group-flush rounded-bottom">
+					<% medScheds.forEach(sched=>{ %>
+					<a
+						href="/schedule/<%=sched.sched_id%>"
+						class="d-block list-group-item p-3"
+					>
+						<div class="w-100">
+							<h5><%=sched.medication%></h5>
+							<small
+								><%=sched.number_of_doses%> dose<% if (sched.number_of_doses >
+								1) { %>s<%}%> (<%=sched.freq_string%>)</small
+							>
+							<small class="d-block my-2">Next dose: <%=sched.nextDose%></small>
+						</div>
+					</a>
+					<%})%>
+					<div class="list-group-item py-3">
+						<a href="/new-schedule" class="btn btn-primary">Add a schedule</a>
+					</div>
+				</div>
+			</div>
+			<% }; %>
+		</main>
+		<script
+			src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+			integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+			crossorigin="anonymous"
+		></script>
+	</body>
+</html>

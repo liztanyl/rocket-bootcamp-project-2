@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<%- include('partials/head') %>
+		<title>pawesome reminders</title>
+	</head>
+	<body>
+		<%- include('partials/navbar') %>
+		<main class="container px-3">
+			<h1 class="display-1 p-3 text-center">
+				Welcome, <%= userInfo.name ?? userInfo.email %>!
+			</h1>
+			<% if (userInfo.name === null) { %>
+			<div class="text-center">
+				<a class="btn border pt-2" href="/edit-profile">Set up your profile</a>
+			</div>
+			<% }; if (userInfo.dogInfo.length===0){%>
+			<div class="text-center">
+				<a class="btn border pt-2" href="/new-dog">Add a dog</a>
+			</div>
+			<%} if (dogsAndScheds.length > 0) { %> <% dogsAndScheds.forEach(dog => {
+			%>
+			<div
+				class="rounded bg-warning mx-1 mb-3 p-3"
+				id="<%= dog.dogInfo.name %>"
+			>
+				<div class="dogInfo">
+					<h2><%= dog.dogInfo.name %></h2>
+				</div>
+				<% if (dog.schedInfo.length > 0) { %>
+				<div class="medInfo bg-danger rounded text-light mt-3">
+					<h4 class="d-block text-end px-3 pt-2">
+						Schedule<% if (dog.schedInfo.length > 1) { %>s<%}%>
+					</h4>
+					<div class="list-group list-group-flush rounded-bottom">
+						<% dog.schedInfo.forEach(sched=>{ %>
+						<a
+							href="/schedule/<%=sched.sched_id%>"
+							class="d-block list-group-item p-3"
+						>
+							<div class="w-100">
+								<h5><%=sched.medication%></h5>
+								<small
+									><%=sched.number_of_doses%> dose<% if (sched.number_of_doses >
+									1) { %>s<%}%> (<%=sched.freq_string%>)</small
+								>
+							</div>
+						</a>
+						<%})%>
+					</div>
+				</div>
+				<%}%>
+				<a href="/dog/<%=dog.dogInfo.id%>" class="btn btn-primary my-3"
+					>View <%=dog.dogInfo.name%>'s page</a
+				>
+			</div>
+
+			<% }) %> <% } %>
+		</main>
+		<script
+			src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+			integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+			crossorigin="anonymous"
+		></script>
+	</body>
+</html>

@@ -1,0 +1,1 @@
+DROP TABLE IF EXISTS sched_msgs, med_sched, meds_dogs, dogs, users, meds, frequencies, images;

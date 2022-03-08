@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<%- include('../partials/head') %>
+		<title>Create your profile - pawesome reminders</title>
+	</head>
+	<body>
+		<%- include('../partials/navbar') %>
+		<main class="container px-3">
+			<h1>Set up your profile</h1>
+
+			<form
+				action="/edit-profile"
+				method="POST"
+				class="needs-validation"
+				novalidate
+			>
+				<div class="form-floating mb-3">
+					<input
+						type="email"
+						name="email"
+						class="form-control"
+						value="<%= userInfo.email %>"
+						readonly
+					/>
+					<label for="email">Email</label>
+				</div>
+				<div class="form-floating mb-3">
+					<input
+						type="text"
+						name="name"
+						value="<%= userInfo.name %>"
+						class="form-control"
+						required
+					/>
+					<label for="name">Name</label>
+					<div class="invalid-feedback">Please enter your name.</div>
+				</div>
+				<div class="form-group mb-3 border rounded bg-light p-3">
+					<p>
+						Pawsome Reminders makes use of a Telegram bot to notify you when
+						it's time to feed your dog its medication.
+					</p>
+					<p>
+						To ensure your Telegram account is set up for this, tap on the
+						button below to open a chat with our bot, and press 'Start'.
+					</p>
+					<div class="text-center">
+						<a
+							href="https://t.me/lizcancode_devbot?start=Welcome"
+							class="btn btn-primary p-2"
+							target="_blank"
+							>Start Telegram bot</a
+						>
+					</div>
+				</div>
+				<div class="form-group mb-3">
+					<div class="form-floating mb-3">
+						<input
+							type="tel"
+							name="tele_id"
+							value="<%= userInfo.tele_id %>"
+							class="form-control"
+							required
+						/>
+						<label for="tele_id">Telegram User ID</label>
+						<div class="invalid-feedback">
+							Please input your Telegram User ID.
+						</div>
+						<div class="form-text px-1">
+							Find out your Telegram User ID with the help of
+							<a href="https://t.me/userinfobot?start=true" target="_blank"
+								>this bot</a
+							>. You should see your ID after tapping 'Start'.
+						</div>
+					</div>
+				</div>
+
+				<!-- <div class="form-group">
+					<label for="photo">Upload a profile photo</label>
+					<input disabled />
+				</div> -->
+				<button type="submit" class="btn btn-primary">Update profile</button>
+			</form>
+		</main>
+		<%- include('../partials/scripts') %>
+	</body>
+</html>

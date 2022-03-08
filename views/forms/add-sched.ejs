@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<%- include('../partials/head') %>
+		<title>Add a reminder schedule - pawesome reminders</title>
+	</head>
+	<body>
+		<%- include('../partials/navbar') %>
+		<main class="container">
+			<h1>Add medication schedule</h1>
+
+			<form action="/new-schedule" method="POST" class="needs-validation" novalidate>
+				<!-- <div class="form-group">
+					<label for="name">Name this schedule</label>
+					<input type="text" name="name" class="form-control" />
+				</div> -->
+
+				<div class="form-floating mb-3">
+					<select name="dog_id" class="form-select" required>
+						<option selected disabled value=""></option>
+						<% Object.values(dogs).forEach((result) => {%>
+							<option value="<%=result.id%>">
+								<%=result.name%>
+							</option> 
+						<% });%>
+						</option>
+					</select>
+					<label for="dog_id">Select Dog</label>
+					<div class="invalid-feedback">Please select who this schedule is for.</div>
+				</div>
+				
+				<div class="form-floating mb-3">
+					<select name="meds_id" class="form-select" required>
+						<option selected disabled value=""></option>
+						<% Object.values(meds).forEach((result) => {%>
+							<option value="<%=result.id%>">
+								<%=result.name%>
+							</option> 
+						<% });%>
+						</option>
+					</select>
+					<label for="meds_id">Select Medication</label>
+					<div class="invalid-feedback">Please select the medication.</div>
+				</div>
+
+				<div class="form-floating mb-3">
+					<input type="date" name="start_date" class="form-control" required />
+					<div class="invalid-feedback">Please choose when the first dose should be given.</div>
+					<label for="start_date">Start Date</label>
+				</div>
+
+				<div class="form-floating mb-3">
+					<input type="number" name="number_of_doses" class="form-control" required />
+					<label for="number_of_doses">Number of doses</label>
+						<div class="invalid-feedback">Please input number of doses required.</div>
+				</div>
+
+				<div class="form-floating mb-3">
+					<select name="frequency_id" class="form-select" required>
+						<option selected disabled value=""></option>
+						<% Object.values(frequencies).forEach((result) => {%>
+							<option value="<%=result.id%>">
+								<%=result.freq_string%>
+							</option> 
+							<% });%>
+						</option>
+					</select>
+					<label for="frequency_id">Select Frequency</label>
+					<div class="invalid-feedback">Please select how often each dose should be given.</div>
+				</div>
+
+				<div class="form-floating mb-3">
+					<textarea name="notes" class="form-control"></textarea>
+					<label for="notes">Notes</label>
+				</div>
+				<button type="submit" class="btn btn-success">Submit</button>
+			</form>
+		</main>
+	<%- include('../partials/scripts') %>
+	</body>
+</html>

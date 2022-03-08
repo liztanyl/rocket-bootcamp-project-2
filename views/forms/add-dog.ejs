@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<%- include('../partials/head') %>
+		<title>Add a dog to your profile - pawesome reminders</title>
+	</head>
+	<body>
+		<%- include('../partials/navbar') %>
+
+		<main class="container">
+			<h1>Add dog</h1>
+			<% if (type === 'error') {%>
+			<div class="text-danger my-3 px-1">
+				Sorry, something went wrong. Please try again!
+			</div>
+			<%}%>
+			<form action="/new-dog" method="POST" class="needs-validation" novalidate>
+				<div class="form-floating mb-3">
+					<input
+						type="text"
+						id="name"
+						name="name"
+						class="form-control"
+						required
+					/>
+					<label for="name" class="form-label">Name</label>
+					<div class="invalid-feedback">Please enter a name.</div>
+				</div>
+				<div class="form-floating mb-3">
+					<input type="text" name="breed" class="form-control" />
+					<label for="breed">Breed</label>
+				</div>
+				<div class="form-floating mb-3">
+					<textarea name="notes" class="form-control"></textarea>
+					<label for="notes">Notes</label>
+				</div>
+				<button type="submit" class="btn btn-success">Submit</button>
+			</form>
+		</main>
+		<%- include('../partials/scripts') %>
+	</body>
+</html>

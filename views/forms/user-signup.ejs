@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<%- include('../partials/head') %>
+		<title>Sign up - pawesome reminders</title>
+	</head>
+	<body>
+		<%- include('../partials/navbar') %>
+		<main class="container">
+			<h1>Create an account</h1>
+			<% if (type === 'error') {%>
+			<h2>Signup error. Try again.</h2>
+			<% }; %>
+
+			<form action="/signup" method="POST" class="needs-validation" novalidate>
+				<div class="form-floating mb-3">
+					<input type="email" name="email" class="form-control" required />
+					<label for="email">Email</label>
+					<div class="invalid-feedback">
+						Please enter a valid email address.
+					</div>
+				</div>
+				<div class="form-floating mb-3">
+					<input
+						type="password"
+						name="password"
+						class="form-control"
+						required
+					/>
+					<label for="password">Password</label>
+					<div class="invalid-feedback">
+						Please enter a password for your account.
+					</div>
+				</div>
+				<button type="submit" class="btn btn-success">Sign up</button>
+			</form>
+		</main>
+		<%- include('../partials/scripts') %>
+	</body>
+</html>

@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<%- include('../partials/head') %>
+		<title>Add a dog to your profile - pawesome reminders</title>
+	</head>
+	<body>
+		<%- include('../partials/navbar') %>
+
+		<main class="container">
+			<h1>Edit dog info</h1>
+
+			<form
+				action="/dog/<%=dogInfo.id%>/edit"
+				method="POST"
+				class="needs-validation"
+				novalidate
+			>
+				<div class="form-floating mb-3">
+					<input
+						type="text"
+						name="name"
+						class="form-control"
+						value="<%=dogInfo.name%>"
+						required
+					/>
+					<label for="name">Name</label>
+					<div class="invalid-feedback">Please enter a name.</div>
+				</div>
+				<div class="form-floating mb-3">
+					<input
+						type="text"
+						name="breed"
+						value="<%=dogInfo.breed%>"
+						class="form-control"
+					/>
+					<label for="breed">Breed</label>
+				</div>
+				<div class="form-floating mb-3">
+					<textarea name="notes" class="form-control">
+<%=dogInfo.notes%></textarea
+					>
+					<label for="notes">Notes</label>
+				</div>
+				<div class="form-group mb-3">
+					<button type="submit" class="btn btn-success">Update dog info</button>
+				</div>
+				<div class="form-group py-3 mb-3">
+					<a href="/dog/<%=dogInfo.id%>" class="btn bg-primary text-light"
+						>Back to dog details</a
+					>
+				</div>
+				<div class="form-group border-top py-3 mb-3">
+					<a href="/dog/<%=dogInfo.id%>/delete" class="btn bg-danger text-light"
+						>Delete dog</a
+					>
+					<div class="form-text">This action cannot be undone!</div>
+				</div>
+			</form>
+		</main>
+		<%- include('../partials/scripts') %>
+	</body>
+</html>
