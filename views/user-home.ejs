@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<%- include('partials/head') %>
-		<title>pawesome reminders</title>
+		<title>Home - pawesome reminders</title>
 	</head>
 	<body>
 		<%- include('partials/navbar') %>
@@ -12,11 +12,13 @@
 			</h1>
 			<% if (userInfo.name === null) { %>
 			<div class="text-center">
-				<a class="btn border pt-2" href="/edit-profile">Set up your profile</a>
+				<a class="btn btn-success pt-2 mb-3" href="/edit-profile"
+					>Set up your profile</a
+				>
 			</div>
-			<% }; if (userInfo.dogInfo.length===0){%>
+			<% } else if (userInfo.dogInfo.length===0){%>
 			<div class="text-center">
-				<a class="btn border pt-2" href="/new-dog">Add a dog</a>
+				<a class="btn btn-primary pt-2" href="/new-dog">Add a dog</a>
 			</div>
 			<%} if (dogsAndScheds.length > 0) { %> <% dogsAndScheds.forEach(dog => {
 			%>
@@ -28,7 +30,7 @@
 					<h2><%= dog.dogInfo.name %></h2>
 				</div>
 				<% if (dog.schedInfo.length > 0) { %>
-				<div class="medInfo bg-danger rounded text-light mt-3">
+				<div class="medInfo bg-danger border rounded text-light mt-3">
 					<h4 class="d-block text-end px-3 pt-2">
 						Schedule<% if (dog.schedInfo.length > 1) { %>s<%}%>
 					</h4>
@@ -54,7 +56,9 @@
 					>View <%=dog.dogInfo.name%>'s page</a
 				>
 			</div>
-
+			<div class="text-center">
+				<a href="/new-schedule" class="btn btn-primary">Add a schedule</a>
+			</div>
 			<% }) %> <% } %>
 		</main>
 		<script

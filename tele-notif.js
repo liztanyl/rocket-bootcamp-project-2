@@ -29,6 +29,13 @@ export const notify = (teleUserId, message, schedInfo) => {
         `;
       pool.query(insertQuery, schedData)
       .then((result) => console.log(result.rows))
-      .catch((err) => console.log(err));
     })
+    .catch((err) => console.log(err));
+}
+
+export const demoNotify = (message) => {
+  const url = `https://api.telegram.org/bot5167017911:AAFqKvtF1NGjQUcLMQP8k5mitDrkUeEHI0M/sendMessage?chat_id=55078913&text=${message}&parse_mode=MarkdownV2`;
+
+  axios.get(url)
+    .catch((err) => console.log(err));
 }

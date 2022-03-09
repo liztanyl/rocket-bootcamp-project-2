@@ -3,7 +3,7 @@ import pg from 'pg';
 import cookieParser from 'cookie-parser';
 import jsSha from 'jssha';
 import later from '@breejs/later';
-import { notify } from './tele-notif.js'
+import { notify, demoNotify } from './tele-notif.js'
 
 // ################################################
 // ###########     INITIALISATION 1    ############
@@ -39,7 +39,7 @@ const generateHash = (input) => {
 
 // Create schedule for notifications (monthly)
 const generateLaterSchedule = (freqInMth, startDay, startMonth) => {
-  return later.parse.recur().every(freqInMth).month().on('09:00').time().on(startDay).dayOfMonth().after(startMonth).month();
+  return later.parse.recur().every(freqInMth).month().on('09:00').time().on(startDay).dayOfMonth().startingOn(startMonth).month();
 }
 
 // Create object for Telegram message
@@ -66,7 +66,6 @@ const storeDataForMsg = (userTeleId, schedInfo) => {
 
 // Render index page ------------------------------
 const showIndexPage = (req, res) => {
-	console.log(req.isUserLoggedIn);
 	if (req.isUserLoggedIn) {
     const dogs = req.userInfo.dogInfo; // Array of dogs (objects) and all their info 
   const dogIds = req.userInfo.dogInfo.map(dog=>dog.id); // Just the ids of the user's dogs
@@ -173,17 +172,17 @@ const showDogProfile = (req, res) => {
 
       Promise.all(queryScheds)
         .then(resultScheds => {
-          const resultDoses = resultScheds.map(result=>result.rows[0]);
-          const dosesLeft = resultDoses.map(obj=>obj.total_doses-obj.current_dose);
-
-          content.medScheds.forEach((schedObj,i) => schedObj.done = dosesLeft[i]===0?true:false);
-          content.medScheds.forEach(schedObj=>{
-            if (!schedObj.done) {
-              const date = new Date(schedObj.start_date);
-              const sched = generateLaterSchedule(schedObj.freq_in_months, date.getDate(), date.getMonth());
-              schedObj.nextDose = later.schedule(sched).next().toLocaleDateString('en-GB', dateOptions);
-            }
-          })
+            const resultDoses = resultScheds.map(result=>result.rows[0]);
+            const dosesLeft = resultDoses.map(obj=>obj?.total_doses-obj?.current_dose);
+            content.medScheds.forEach((schedObj,i) => schedObj.done = dosesLeft[i]===0?true:false);
+            content.medScheds.forEach(schedObj=>{
+              if (!schedObj.done) {
+                const date = new Date(schedObj.start_date);
+                const sched = generateLaterSchedule(schedObj.freq_in_months, date.getDate(), date.getMonth());
+                schedObj.nextDose = later.schedule(sched).next().toLocaleDateString('en-GB', dateOptions);
+              }
+            })
+          
           res.render('dog-profile', content);
         })
         .catch(err=>console.log(err))
@@ -207,7 +206,8 @@ const showIndivSchedListing = (req, res) => {
   pool.query(query, [req.params.id])
     .then(result => {
       const startDate = new Date(result.rows[0].start_date);
-      const sched = later.parse.recur().every(result.rows[0].freq_in_months).month().on(startDate.getDate()).dayOfMonth().after(startDate.getMonth()).month();
+      console.log(startDate);
+      let sched = later.parse.recur().every(result.rows[0].freq_in_months).month().on(startDate.getDate()).dayOfMonth().startingOn(startDate.getMonth()+1).month();
 
       let scheds = later.schedule(sched).next(result.rows[0].number_of_doses);
       if (!Array.isArray(scheds)) scheds = Array.of(scheds);
@@ -255,7 +255,6 @@ const showUserProfileForm = (req, res) => {
   const content = {
     userInfo: req.userInfo,
     id: req.userInfo?.id ?? null,};
-  console.log(content)
   res.render('forms/create-user', content)
 };
 
@@ -300,6 +299,56 @@ const showCreateSchedForm = (req, res) => {
 		res.render('forms/add-sched', content);
 	});
 };
+
+
+// TO DEMO TELEGRAM SCHEDULE (START MESSAGE + 3 REMINDERS AT 10SEC INTERVAL)
+const demoNotificationSchedule = (req, res) => {
+  let d = new Date();
+  console.log(d)
+  d.setSeconds(d.getSeconds() + 15);
+  console.log(d)
+  const msgData = {
+    dogName: 'Kaya',
+    medication: 'Simparica® Trio',
+    totalDoses: 3,
+    startDate: d.toLocaleDateString('en-GB', dateOptions),
+    freqStr: 'once in 10 seconds',
+  };
+
+  let remainingDoses = 3;
+
+  const startMsg = `*Woof\\! Your schedule has been set up\\.* \n\nWe will remind you to give ${msgData.dogName} a dose of ${msgData.medication} ${msgData.freqStr}, starting ${msgData.startDate}\\.`;
+
+  const sendReminder = () => {    
+    console.log(`DEMO SCHEDULE
+      - Total Number of Doses: 3
+      - Current Dose: ${3-remainingDoses+1}
+      - Sending reminder now: ${new Date()}`);
+
+    const msg = `*Woof woof\\! Don't paw\\-get to give ${msgData.dogName} a dose of ${msgData.medication} today\\!* \n\nThis is dose ${3-remainingDoses+1} out of ${msgData.totalDoses}\\.`;
+
+    demoNotify(encodeURI(msg))
+    
+    remainingDoses -= 1;
+    console.log('Doses remaining: ', remainingDoses);
+
+    if (remainingDoses <= 0) { 
+      console.log(`<< Reminder schedule complete >>
+        DEMO SCHEDULE
+        - Final reminder sent on: ${new Date()}`);
+      t.clear();
+    }
+  }
+  
+  const sched = later.parse.recur().every(10).second();
+
+  const t = later.setInterval(sendReminder, sched);
+  
+  demoNotify(encodeURI(startMsg));
+
+  res.redirect('/');
+};
+
 
 //
 // <<<<<<<<<<<<<<<< POST HANDLERS >>>>>>>>>>>>>>>>
@@ -408,7 +457,10 @@ const handleDeleteDog = (req, res) => {
   `;
 	pool
 		.query(query, dogId)
-		.then(res.redirect(`/profile`))
+		.then(result=>{
+      console.log(result);
+      res.redirect(`/profile`)
+    })
 		.catch((err) => console.log(err));
 };
 
@@ -441,8 +493,6 @@ const handleNewSchedule = (req, res) => {
 
           const startMsg = `*Woof\\! Your schedule has been set up\\.* \n\nWe will remind you to give ${msgData.dogName} a dose of ${msgData.medication} ${msgData.freqStr}, starting ${msgData.startDate}\\.`;
 
-          const msg = `*Woof woof\\! Don't paw\\-get to give ${msgData.dogName} a dose of ${msgData.medication} today\\!* \n\nThis is dose ${msgData.totalDoses-remainingDoses+1} out of ${msgData.totalDoses}\\.`
-
           const sendReminder = () => {
             const schedInfo = {
               schedId: schedData.sched_id,
@@ -455,7 +505,9 @@ const handleNewSchedule = (req, res) => {
               - Total Number of Doses: ${schedInfo.totalDoses}
               - Current Dose: ${schedInfo.currentDose}
               - Sending reminder now: ${new Date()}`);
-              
+            
+            const msg = `*Woof woof\\! Don't paw\\-get to give ${msgData.dogName} a dose of ${msgData.medication} today\\!* \n\nThis is dose ${msgData.totalDoses-remainingDoses+1} out of ${msgData.totalDoses}\\.`
+
             notify(msgData.teleId, encodeURI(msg), schedInfo)
             
             remainingDoses -= 1;
@@ -531,7 +583,6 @@ const checkAuth = (req, res, next) => {
         req.userInfo.schedInfo = result[2].rows;
 				console.log(`checkAuth --- done checking auth at '${req.url}' --- user ${req.cookies.userId} logged in: ${req.isUserLoggedIn}`
 				);
-				console.log('req.userInfo:',req.userInfo);
 				next();
 			})
 			.catch((err) => {
@@ -560,6 +611,8 @@ const handleUserLogout = (req, res, next) => {
   }
 	next();
 };
+
+
 
 // ################################################
 // ##########     INITIALISE EXPRESS     ##########
@@ -597,9 +650,6 @@ app.route('/edit-profile')
   .get(showUserProfileForm)
   .post(handleEditUserProfile);
 
-// app.get("/user/:id/edit", showEditUserProfileForm);
-// app.post("/user/:id/edit", handleUserProfileEdit);
-
 // Dog profile ------------------------------------
 app.get('/dog/:id', showDogProfile);
 
@@ -620,8 +670,8 @@ app.route('/new-schedule')
 
 app.get('/schedule/:id', showIndivSchedListing);
 
-// app.get("/schedule/:id/edit", showEditSchedForm);
-// app.post("/schedule/:id/edit", handleEditSched);
+// Telegram notification demo ---------------------
+app.get('/demo-schedule', demoNotificationSchedule)
 
 // ################################################
 // ################################################

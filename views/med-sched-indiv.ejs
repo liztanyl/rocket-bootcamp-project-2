@@ -2,7 +2,9 @@
 <html lang="en">
 	<head>
 		<%- include('partials/head') %>
-		<title>My schedule - pawesome reminders</title>
+		<title>
+			<%=medInfo.dog%>'s <%=medInfo.medication%> Schedule - pawesome reminders
+		</title>
 	</head>
 	<body>
 		<%- include('partials/navbar') %>
@@ -10,7 +12,7 @@
 		<main class="container">
 			<h1><%=medInfo.dog%>'s <%=medInfo.medication%> Schedule</h1>
 			<div class="keyInfo rounded bg-danger border rounded text-light mt-3">
-				<h5 class="d-block px-3 pt-2">Key Info</h5>
+				<h4 class="d-block px-3 pt-2">Key Info</h4>
 				<div class="list-group list-group-flush">
 					<div class="list-group-item py-3">
 						<h6>Medication</h6>
@@ -37,7 +39,7 @@
 				</div>
 			</div>
 			<div class="schedInfo rounded bg-success border rounded mt-3">
-				<h5 class="d-block text-light px-3 pt-2">Schedule</h5>
+				<h4 class="d-block text-light px-3 pt-2">Schedule</h4>
 				<div class="list-group list-group-flush">
 					<% schedInfo.forEach(dose => { %>
 					<div class="list-group-item py-3"><%= dose %></div>
@@ -45,7 +47,7 @@
 				</div>
 			</div>
 			<div class="notesInfo rounded bg-warning border rounded mt-3">
-				<h5 class="d-block px-3 pt-2">Notes</h5>
+				<h4 class="d-block px-3 pt-2">Notes</h4>
 				<div class="p-3 bg-light">
 					<%=medInfo.notes ? medInfo.notes : "None" %>
 				</div>

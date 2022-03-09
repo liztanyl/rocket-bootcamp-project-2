@@ -2,12 +2,22 @@
 <html lang="en">
 	<head>
 		<%- include('partials/head') %>
-		<title>Log in - pawesome reminders</title>
+		<title>pawesome reminders</title>
 	</head>
 	<body>
 		<%- include('partials/navbar') %>
-		<main class="container">
-			<h1>Join us!</h1>
+		<main class="container text-center">
+			<div class="bg-warning rounded m-3 my-5 p-3">
+				<h1 class="my-3">Pawsome Reminders</h1>
+				<div class="my-3">
+					<h3>New users:</h3>
+					<a href="/signup" class="btn btn-primary my-2">Sign up</a>
+				</div>
+				<div class="my-3">
+					<h3>Existing users:</h3>
+					<a href="/login" class="btn btn-primary my-2">Log in</a>
+				</div>
+			</div>
 		</main>
 		<script
 			src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"

@@ -36,18 +36,6 @@ CREATE TABLE IF NOT EXISTS meds (
   description TEXT
 );
 
-CREATE TABLE IF NOT EXISTS meds_dogs (
-  id SERIAL PRIMARY KEY,
-  dog_id INTEGER,
-  med_id INTEGER,
-  CONSTRAINT fk_medsdogs_dogid
-    FOREIGN KEY (dog_id)
-      REFERENCES dogs(id),
-  CONSTRAINT fk_medsdogs_medid
-    FOREIGN KEY (med_id)
-      REFERENCES meds(id)
-);
-
 CREATE TABLE IF NOT EXISTS frequencies (
   id SERIAL PRIMARY KEY,
   freq_string TEXT,
@@ -64,7 +52,8 @@ CREATE TABLE IF NOT EXISTS med_sched (
   notes TEXT,
   CONSTRAINT fk_medsched_dogid 
     FOREIGN KEY (dog_id)
-      REFERENCES dogs(id),
+      REFERENCES dogs(id)
+      ON DELETE CASCADE,
   CONSTRAINT fk_medsched_medid
     FOREIGN KEY (meds_id)
       REFERENCES meds(id),

@@ -1,37 +1,115 @@
-.navbar-brand { 
-  font-family: 'Fredoka', sans-serif;
-  font-weight: 600;
-  font-size: 1.5em;
+.navbar-brand {
+	font-family: 'Fredoka', sans-serif;
+	font-weight: 600;
+	font-size: 1.5em;
 }
 
-.navbar-nav { 
-  font-weight: 300;
+.navbar-nav {
+	font-weight: 300;
+}
+
+.nav-link {
+	color: white !important;
+	font-weight: 400;
 }
 
 body {
-  font-family: 'Spartan', sans-serif;
-  /* font-size: 0.9em; */
-  font-weight: 500;
-  background-color: #fff8f8;
-  margin-bottom: 50px;
+	font-family: 'Spartan', sans-serif;
+	font-weight: 500;
+	background-color: #fff8f0;
+	margin-bottom: 50px;
 }
 
 main {
-  margin-top: 15px;
+	margin-top: 15px;
 }
 
-h1, h2, h6 { 
-  font-family: 'Fredoka', sans-serif;
-  font-weight: 600;
+h1,
+h2,
+h4 {
+	font-family: 'Fredoka', sans-serif;
+	font-weight: 600;
 }
 
-h3, h4, h5 { 
-  font-family: 'Fredoka', sans-serif;
-  font-weight: 300;
+h3,
+h5,
+h6 {
+	font-family: 'Fredoka', sans-serif;
+	font-weight: 300;
 }
 
 .progress-btn {
-  font-size: 0.7em;
+	font-size: 0.7em;
+}
+
+.text-primary {
+	background-color: #324376 !important;
+}
+
+.text-light {
+	color: #fff8f8 !important;
+}
+
+.bg-primary {
+	background-color: #324376 !important;
+}
+
+.bg-secondary {
+	background-color: #0cbaba !important;
+}
+
+.bg-warning {
+	background-color: #ffc95c !important;
+	border-color: #ffc95c !important;
+}
+
+.bg-danger {
+	background-color: #f75e50 !important;
+	border-color: #f75e50 !important;
+}
+
+.bg-success {
+	background-color: #0cbaba !important;
+	border-color: #0cbaba !important;
+}
+
+.bg-light {
+	background-color: #fff8f8 !important;
+}
+
+.btn-primary {
+	color: #fff8f8;
+	background-color: #324376 !important;
+	border-color: #324376 !important;
+}
+
+.btn-danger {
+	color: #fff8f8;
+	background-color: #f75e50 !important;
+	border-color: #f75e50 !important;
+}
+
+.btn-success {
+	color: #fff8f8;
+	background-color: #0cbaba !important;
+	border-color: #0cbaba !important;
+}
+
+.bg-success > .list-group-flush > .list-group-item {
+	border-color: #0cbaba7e !important;
+}
+
+.bg-danger > .list-group-flush > .list-group-item {
+	border-color: #f75e507e !important;
+}
+
+.bg-warning > .list-group-flush > .list-group-item {
+	border-color: #ffc95c7e !important;
+}
+
+.list-group-horizontal > .list-group-item {
+	background-color: #fff8f0;
+	border-color: #f75e507e;
 }
 
 /* CSS HEX
@@ -40,5 +118,4 @@ h3, h4, h5 {
 --dark-cornflower-blue: #324376ff;
 --bittersweet: #f76c5eff;
 --floral-white: #fff8f0ff;
-
-
+*/
