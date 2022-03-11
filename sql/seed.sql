@@ -1,3 +1,9 @@
+INSERT INTO frequencies (freq_string, freq_in_months) VALUES 
+('Once a month', 1),
+('Once in 3 months', 3),
+('Once in 6 months', 6),
+('Once a year', 12);
+
 INSERT INTO meds (name, description) VALUES
 ('HEARTGARD®','Preventive medication for: heartworms. Admitted orally'),
 ('HEARTGARD® Plus','Preventive medication for: heartworms, hookworms and roundworms. Admitted orally'),
