@@ -19,14 +19,14 @@ if (process.env.DATABASE_URL) {
     ssl: {
       rejectUnauthorized: false
     }
-  };
+  }
 } else {
   pgConfigs = {
     user: 'liztanyl',
     host: 'localhost',
     database: 'project_2',
     port: 5432,
-  };
+  }
 }
 
 const pool = new Pool(pgConfigs);
@@ -203,6 +203,9 @@ const showDogProfile = (req, res) => {
 
 // Render individual medication schedule page -----
 const showIndivSchedListing = (req, res) => {
+  console.log('schedule page pt 1');
+
+  console.log(pgConfigs);
   const query = `
     SELECT med_sched.id, dog_id, dogs.name AS dog, dogs.image_id AS dog_photo_path, meds.name AS medication, meds.description, start_date, number_of_doses, frequencies.freq_string, frequencies.freq_in_months, med_sched.notes
     FROM med_sched
@@ -216,6 +219,7 @@ const showIndivSchedListing = (req, res) => {
   `;
   pool.query(query, [req.params.id])
     .then(result => {
+      console.log('schedule page pt 2');
       const startDate = new Date(result.rows[0].start_date);
       console.log(startDate);
       let sched = later.parse.recur().every(result.rows[0].freq_in_months).month().on(startDate.getDate()).dayOfMonth().startingOn(startDate.getMonth()+1).month();
