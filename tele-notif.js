@@ -34,7 +34,7 @@ export const notify = (teleUserId, message, schedInfo) => {
 }
 
 export const demoNotify = (message) => {
-  const url = `https://api.telegram.org/bot5167017911:AAFqKvtF1NGjQUcLMQP8k5mitDrkUeEHI0M/sendMessage?chat_id=55078913&text=${message}&parse_mode=MarkdownV2`;
+  const url = `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage?chat_id=55078913&text=${message}&parse_mode=MarkdownV2`;
 
   axios.get(url)
     .catch((err) => console.log(err));

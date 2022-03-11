@@ -11,12 +11,23 @@ import { notify, demoNotify } from './tele-notif.js'
 
 // Initialise pool for Postgres
 const { Pool } = pg;
-const pgConfigs = {
-	user: 'liztanyl',
-	host: 'localhost',
-	database: 'project_2',
-	port: 5432,
-};
+let pgConfigs;
+
+if (process.env.DATABASE_URL) {
+  pgConfigs = {
+    connectionString: process.env.DATABASE_URL,
+    ssl: {
+      rejectUnauthorized: false
+    }
+  };
+} else {
+  pgConfigs = {
+    user: 'liztanyl',
+    host: 'localhost',
+    database: 'project_2',
+    port: 5432,
+  };
+}
 
 const pool = new Pool(pgConfigs);
 
@@ -625,6 +636,8 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(checkAuth);
 
+const PORT = process.env.PORT || 3004;
+
 const preAuthPaths = ['/signup', '/login', '/logout', '/styles.css'];
 
 // ################################################
@@ -676,4 +689,4 @@ app.get('/demo-schedule', demoNotificationSchedule)
 // ################################################
 // ################################################
 
-app.listen(3004);
+app.listen(PORT);
