@@ -1,12 +1,23 @@
 import axios from 'axios';
 import pg from 'pg';
 const { Pool } = pg;
-const pgConfigs = {
-	user: 'liztanyl',
-	host: 'localhost',
-	database: 'project_2',
-	port: 5432,
-};
+let pgConfigs;
+
+if (process.env.DATABASE_URL) {
+  pgConfigs = {
+    connectionString: process.env.DATABASE_URL,
+    ssl: {
+      rejectUnauthorized: false
+    }
+  }
+} else {
+  pgConfigs = {
+    user: 'liztanyl',
+    host: 'localhost',
+    database: 'project_2',
+    port: 5432,
+  }
+}
 
 const pool = new Pool(pgConfigs);
 
