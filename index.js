@@ -481,6 +481,7 @@ const handleDeleteDog = (req, res) => {
 
 // POST: new medication schedule ------------------
 const handleNewSchedule = (req, res) => {
+  console.log('POST new sched start');
   const { dog_id, meds_id, start_date, number_of_doses, frequency_id, notes } = req.body;
   const formInfo = [dog_id, meds_id, start_date, number_of_doses, frequency_id, notes];
   const insertQuery = `
@@ -488,6 +489,7 @@ const handleNewSchedule = (req, res) => {
   `;
   pool.query(insertQuery, formInfo)
     .then(result => {
+      console.log('POST new sched first query result');
       console.log(result.rows[0].id)
       const queryInfo = `
         SELECT med_sched.id AS sched_id, med_sched.start_date, med_sched.number_of_doses, meds.name AS medication, freq_string, freq_in_months, dogs.name AS dog_name
@@ -502,6 +504,7 @@ const handleNewSchedule = (req, res) => {
       `;
       pool.query(queryInfo, [result.rows[0].id])
         .then(result2 => {
+          console.log('POST new sched second query result');
           const schedData = result2.rows[0];
           const msgData = storeDataForMsg(req.userInfo.tele_id, schedData);
           let remainingDoses = schedData.number_of_doses;
@@ -550,7 +553,7 @@ const handleNewSchedule = (req, res) => {
               totalDoses: msgData.totalDoses,
               done: false,
             });
-
+            console.log('POST newsched bef redirect', pgConfigs)
           res.redirect(`/schedule/${schedData.sched_id}`)
         })
     })
