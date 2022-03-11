@@ -8,7 +8,7 @@
 		<%- include('partials/navbar') %>
 		<main class="container px-3">
 			<h1 class="display-1 p-3 text-center">
-				Welcome, <%= userInfo.name ?? userInfo.email %>!
+				Welcome<%= userInfo.name ? `, ${userInfo.name}` : null %>!
 			</h1>
 			<% if (userInfo.name === null) { %>
 			<div class="text-center">
