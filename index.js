@@ -31,8 +31,6 @@ if (process.env.DATABASE_URL) {
 
 const pool = new Pool(pgConfigs);
 
-const SALT = 'project 2'; // TODO: put in env var later on
-
 later.date.localTime();
 const dateOptions = { weekday:"long", year:"numeric", month:"short", day:"numeric"};
 
@@ -42,7 +40,7 @@ const dateOptions = { weekday:"long", year:"numeric", month:"short", day:"numeri
 // ################################################
 
 const generateHash = (input) => {
-	const unhashedStr = `${input}x${SALT}`;
+	const unhashedStr = `${input}x${process.env.SALT}`;
 	const shaObj = new jsSha('SHA-512', 'TEXT', { encoding: 'UTF8' });
 	shaObj.update(unhashedStr);
 	return shaObj.getHash('HEX'); //hashedString
